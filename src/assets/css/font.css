@@ -1,21 +1,37 @@
-/* Poppins */
+/* Charte ZzzAmeliiie : Bebas Neue (titres, chiffres, dates) + Work Sans (texte courant).
+   Licence SIL Open Font, fichiers embarqués pour fonctionner hors ligne. */
 
 @font-face {
-    font-family: 'Poppins';
+    font-family: "Bebas Neue";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local('Poppins Regular'), local('Poppins-Regular'), url('../fonts/Poppins-Regular.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    src: url("../fonts/BebasNeue-Regular.woff2") format("woff2");
 }
 
 @font-face {
-    font-family: 'Poppins';
+    font-family: "Work Sans";
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400 700;
     font-display: swap;
-    src: local('Poppins Bold'), local('Poppins-Bold'), url('../fonts/Poppins-Bold.woff2') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    src: url("../fonts/WorkSans-Variable.woff2") format("woff2");
+}
+
+/* Titrage : une seule graisse, capitales, interlettrage +2 %. */
+.titre-tab,
+.titre-tab-new,
+.popup-title,
+.header-text .title,
+.news-header .date,
+.server-status-name,
+.player-count,
+.play-btn,
+.splash-message,
+.download-update {
+    font-family: "Bebas Neue", "Work Sans", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 /* Icons */

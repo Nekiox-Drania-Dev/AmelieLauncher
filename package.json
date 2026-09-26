@@ -1,7 +1,7 @@
 {
     "name": "conquete-spatiale-launcher",
     "preductname": "Conquete Spatiale",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Launcher de l’event Minecraft Conquête Spatiale (basé sur Selvania Launcher de Luuxis)",
     "main": "src/app.js",
     "author": {

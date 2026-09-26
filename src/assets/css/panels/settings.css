@@ -245,7 +245,7 @@
 .slider-touch-right span:after {
     content: attr(value);
     color: var(--element-color);
-    font: normal normal bold 12px/18px Poppins;
+    font: normal normal bold 12px/18px "Work Sans", sans-serif;
     white-space: nowrap;
     pointer-events: none;
     position: absolute;

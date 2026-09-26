@@ -140,11 +140,11 @@
     padding: 0 1.5rem;
     padding-bottom: 1rem;
     font-size: 1.2rem;
-
+    line-height: 1.5;
 }
 
 .news-content .bbWrapper p {
-    font-weight: 100;
+    font-weight: 400;
     margin: 0;
 
 }
@@ -265,8 +265,7 @@
     border-radius: 10px;
     background: none;
     color: var(--color);
-    font-size: 2rem;
-    font-weight: bolder;
+    font-size: 2rem;
     padding: 0 1.5rem;
     pointer-events: none;
 }
