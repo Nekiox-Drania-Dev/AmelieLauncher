@@ -54,9 +54,9 @@ class Splash {
     async checkUpdate() {
         this.setStatus(`Recherche de mise à jour...`);
 
-        ipcRenderer.invoke('update-app').then().catch(err => {
-            return this.shutdown(`erreur lors de la recherche de mise à jour :<br>${err.message}`);
-        });
+        // Si la vérification échoue (GitHub injoignable, aucune release...), on continue sans mise à jour
+        // au lieu de fermer le launcher : une panne de GitHub ne doit pas empêcher de jouer.
+        ipcRenderer.invoke('update-app').then().catch(err => this.skipUpdate(err));
 
         ipcRenderer.on('updateAvailable', () => {
             this.setStatus(`Mise à jour disponible !`);
@@ -68,7 +68,7 @@ class Splash {
         })
 
         ipcRenderer.on('error', (event, err) => {
-            if (err) return this.shutdown(`${err.message}`);
+            if (err) this.skipUpdate(err);
         })
 
         ipcRenderer.on('download-progress', (event, progress) => {
@@ -80,6 +80,15 @@ class Splash {
             console.error("Mise à jour non disponible");
             this.maintenanceCheck();
         })
+    }
+
+    async skipUpdate(err) {
+        if (this.updateSkipped) return;
+        this.updateSkipped = true;
+        console.warn('Mise à jour impossible à vérifier :', err?.message ?? err);
+        this.setStatus(`Mise à jour impossible à vérifier,<br>démarrage quand même...`);
+        await sleep(2000);
+        this.maintenanceCheck();
     }
 
     getLatestReleaseForOS(os, preferredFormat, asset) {
