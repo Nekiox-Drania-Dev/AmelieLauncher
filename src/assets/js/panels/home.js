@@ -214,7 +214,7 @@ class Home {
         let opt = {
             url: options.url,
             authenticator: authenticator,
-            timeout: 10000,
+            timeout: 30000, // 10 s coupait les gros fichiers (Create : 19 Mo) sur les connexions lentes
             path: `${await appdata()}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}`,
             instance: options.name,
             version: options.loader.minecraft_version,
@@ -318,10 +318,12 @@ class Home {
 
         launch.on('error', err => {
             let popupError = new popup()
+            const message = describeError(err);
+            logLaunchError(opt.path, err, message);
 
             popupError.openPopup({
                 title: 'Erreur',
-                content: err.error,
+                content: `${message}<br><br><small>Détails : ${opt.path}/launcher-erreurs.log</small>`,
                 color: 'red',
                 options: true
             })
@@ -347,4 +349,37 @@ class Home {
         return { year: year, month: allMonth[month - 1], day: day }
     }
 }
+/** Message lisible quelle que soit la forme de l'erreur (texte, Error, objet de minecraft-java-core). */
+function describeError(err) {
+    if (!err) return 'Erreur inconnue';
+    if (typeof err === 'string') return err;
+    const inner = err.error ?? err;
+    if (typeof inner === 'string') return inner;
+    if (inner.message) return inner.message;
+    if (err.message) return err.message;
+    try {
+        const json = JSON.stringify(err);
+        return json && json !== '{}' ? json : String(err);
+    } catch {
+        return String(err);
+    }
+}
+
+/** Garde une trace des erreurs de lancement, à envoyer aux organisateurs en cas de souci. */
+function logLaunchError(gamePath, err, message) {
+    try {
+        const fs = require('fs');
+        fs.mkdirSync(gamePath, { recursive: true });
+        let details;
+        try {
+            details = err?.stack ?? err?.error?.stack ?? JSON.stringify(err, null, 2);
+        } catch {
+            details = String(err);
+        }
+        fs.appendFileSync(`${gamePath}/launcher-erreurs.log`, `[${new Date().toISOString()}] ${message}\n${details}\n\n`);
+    } catch (e) {
+        console.error("Impossible d'écrire le log d'erreur", e);
+    }
+}
+
 export default Home;
